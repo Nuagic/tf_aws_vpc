@@ -38,6 +38,11 @@ variable "enable_nat_gateway" {
   default     = false
 }
 
+variable "enable_private_internet_gateway" {
+  description = "should be true if you want to internet Gateway routing for each of your private networks"
+  default     = false
+}
+
 variable "map_public_ip_on_launch" {
   description = "should be false if you do not want to auto-assign public IP on launch"
   default     = true

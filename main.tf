@@ -29,6 +29,13 @@ resource "aws_route" "private_nat_gateway" {
   count                  = "${length(var.private_subnets) * lookup(map(var.enable_nat_gateway, 1), "true", 0)}"
 }
 
+resource "aws_route" "private_internet_gateway" {
+  route_table_id         = "${element(aws_route_table.private.*.id, count.index)}"
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = "${aws_internet_gateway.mod.id}"
+  count                  = "${length(var.private_subnets) * lookup(map(var.enable_private_internet_gateway, 1), "true", 0)}"
+}
+
 resource "aws_route_table" "private" {
   vpc_id           = "${aws_vpc.mod.id}"
   propagating_vgws = ["${var.private_propagating_vgws}"]
