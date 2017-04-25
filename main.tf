@@ -56,14 +56,14 @@ resource "aws_subnet" "database" {
   cidr_block        = "${var.database_subnets[count.index]}"
   availability_zone = "${element(var.azs, count.index)}"
   count             = "${length(var.database_subnets)}"
-  tags              = "${merge(var.tags, map("Name", format("%s-database-subnet-%s", var.name, element(var.azs, count.index))))}"
+  tags              = "${merge(var.tags, map("Name", format("%s-subnet-database-%s", var.name, element(var.azs, count.index))))}"
 }
 
 resource "aws_db_subnet_group" "database" {
   name        = "${var.name}-rds-subnet-group"
   description = "Database subnet groups for ${var.name}"
   subnet_ids  = ["${aws_subnet.database.*.id}"]
-  tags        = "${merge(var.tags, map("Name", format("%s-database-subnet-group", var.name)))}"
+  tags        = "${merge(var.tags, map("Name", format("%s-subnet-database-group", var.name)))}"
   count       = "${length(var.database_subnets) > 0 ? 1 : 0}"
 }
 
